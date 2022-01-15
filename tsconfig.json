@@ -13,7 +13,9 @@
     "declaration": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "alwaysStrict": true,
+    "outDir": "dist"
   },
   "include": ["./src"]
 }
