@@ -1,51 +1,71 @@
-type InternalData<T> = {
-  value?: T;
-  error?: any;
-  context?: any;
+export type ResultType<Rsult, ErrorType> = {
+  result?: Rsult;
+  error?: ErrorType;
 };
 
-export function _try<T>(body: (context: any) => T) {
-  let error: any;
-  let result: T;
-  let context: any = {};
+export type ErrrorHandler<ErrorType> = (error?: ErrorType) => void;
+
+export type FinallyCallback<Result, ErrorType> = ((params: ResultType<Result, ErrorType>) => Result | void | undefined);
+
+export type TryReturn<Result, ErrorType = any> = {
+  catch: (error: ErrorType | ErrorType[], handler: ErrrorHandler<ErrorType>) => TryReturn<Result, ErrorType>;
+  other: (handler: ErrrorHandler<ErrorType>) => Pick<TryReturn<Result, ErrorType>, 'finally'>,
+  finally: (callback?: FinallyCallback<Result, ErrorType>) => ResultType<Result, ErrorType>,
+  result: Result,
+  error: ErrorType
+}
+
+export type TryBody<Result> = () => Result | never;
+
+export function $try<Return>(body: TryBody<Return>): TryReturn<Return> {
+  let caught = false;
+  let error: any | { constructor?: any; };
+  let result: Return | any;
   const isSameInstance = (e1: any) => e1 === error || e1 === error?.constructor;
 
   try {
-    result = body(context);
+    result = body();
   } catch (e) {
     error = e;
   }
 
-  const chain = {
-    catch: (err: any, handler: (context: any) => void) => {
+  const chain: TryReturn<typeof result, typeof error> = {
+    catch: (err, handler) => {
       if (!err || !handler) {
         return chain;
       }
       if (isSameInstance(err)) {
-        handler && handler(context);
-      } else if (Array.isArray(err)) {
-        err.some(isSameInstance) && handler(context);
+        handler && handler();
+        caught = true;
+      } else if (Array.isArray(err) && err.some(isSameInstance)) {
+        handler && handler();
+        caught = true;
       }
       return chain;
     },
-    other: (handler: (error: any, context: any) => void) => {
-      if (error) {
-        handler && handler(error, context);
+
+    other: (handler) => {
+      if (!caught && error) {
+        handler && handler(error);
       }
       return {
-        finally: chain.finally
-      };
-    },
-    finally: (callback: (params: InternalData<T>) => T): InternalData<T> => {
-      return {
-        value: callback ? callback({value: result, error, context}) : result,
+        finally: chain.finally,
+        result,
         error,
-        context,
       };
     },
+
+    finally: (callback?) => {
+      return {
+        result: callback ? callback({ result, error }) : result,
+        error,
+      };
+    },
+    result,
+    error,
   };
 
   return chain;
 }
 
-export default _try;
+export default $try;

@@ -50,77 +50,51 @@ npm install catch-match
 ```
 
 ```javascript
-import _try from 'catch-match';
+import $try from 'catch-match';
 // or
-import { _try } from 'catch-match';
-// or
-import { _try as customTry } from 'catch-match';
+import { $try } from 'catch-match';
 ```
 
 ## Example 1
+
 ```javascript
-const result = _try(context => {
-    context.tmp = 'any context data';
-    console.log('start', context);
-    return [1, 2, 3, 4, 5]; // value
-}).catch(SyntaxError, (context) => {
-    // noop
-}).catch([TypeError, ReferenceError], (context) => {
-    // noop
-}).other((error, context) => {
-    // noop
-}).finally(({value, context, error}) => {
-    // value: [1, 2, 3, 4, 5] 
-    // context: {tmp: 'any context data'}
-    // error: undefined
-    if (!error) {
-      return value.reverse();
-    }
+const result = $try(() => {
+  throw SyntaxError;
+}).catch(ReferenceError, () => {
+  // noop
+}).catch([TypeError, SyntaxError], () => {
+  // to be called
+}).other((error) => {
+  // noop
+}).finally(({ result, error }) => {
+  return result;
 });
 
-console.log(result); 
-// {
-//     value: [5, 4, 3, 2, 1] 
-//     context: {tmp: 'any context data'}
-//     error: undefined
-// } 
-
+console.log(result); // { error: SyntaxError, result: undefined }
 ```
 
 ## Example 2
+
 ```javascript
-const result = _try(context => {
-  context.tmp = 'any context data';
-  console.log('start', context);
-  // ...
-  throw ReferenceError;
-}).catch(SyntaxError, (context) => {
+const result = $try(() => {
+  return [1, 2, 3];
+}).catch(ReferenceError, () => {
   // noop
-}).catch([TypeError, ReferenceError], (context) => {
-  // context: {tmp: 'any context data'}
-}).other((error, context) => {
+}).catch([TypeError, SyntaxError], () => {
+  // to be called
+}).other((error) => {
   // noop
-}).finally(({value, context, error}) => {
-  // value: undefined 
-  // context: {tmp: 'any context data'}
-  // error: ReferenceError
-  if (!error) {
-    return value.reverse();
-  }
+}).finally(({ result, error }) => {
+  return result;
 });
 
-console.log(result); 
-// {
-//     value: undefined 
-//     context: {tmp: 'any context data'}
-//     error: ReferenceError
-// } 
-
+console.log(result); // {error: undefined, result: [1, 2, 3]}
 ```
 
 ## Example 3
+
 ```javascript
-const result = _try(context => {
+const result = $try(context => {
   context.tmp = 'any context data';
   console.log('start', context);
   // ...
@@ -140,7 +114,7 @@ const result = _try(context => {
   }
 });
 
-console.log(result); 
+console.log(result);
 // {
 //     value: undefined 
 //     context: {tmp: 'any context data', unexpectedError: true}
