@@ -47,3 +47,5 @@ export function _try<T>(body: (context: any) => T) {
 
   return chain;
 }
+
+export default _try;

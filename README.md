@@ -50,7 +50,11 @@ npm install catch-match
 ```
 
 ```javascript
+import _try from 'catch-match';
+// or
 import { _try } from 'catch-match';
+// or
+import { _try as customTry } from 'catch-match';
 ```
 
 ## Example 1
