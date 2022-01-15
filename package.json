@@ -1,9 +1,11 @@
 {
   "name": "catch-match",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "repository": {
     "url": "https://github.com/kobzarvs/catch-match"
   },
+  "type": "module",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc"
   },
