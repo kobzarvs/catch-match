@@ -1,9 +1,10 @@
 {
   "name": "catch-match",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "repository": {
     "url": "https://github.com/kobzarvs/catch-match"
   },
+  "keywords": ["try", "catch", "match", "pattern", "errors", "exceptions", "throw", "finally"],
   "type": "module",
   "main": "dist/main.js",
   "scripts": {
