@@ -10,6 +10,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noEmit": false,
+    "declaration": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true
