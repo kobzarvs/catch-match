@@ -2,8 +2,6 @@
 
 ## Motivation
 
-## Java example
-
 ```java
 try {
     ...
@@ -16,6 +14,20 @@ try {
 } finally {
   ....
 }
+```
+
+## Getting started
+
+```shell
+yarn add catch-match
+
+or 
+
+npm install catch-match
+```
+
+```javascript
+import { _try } from 'catch-match';
 ```
 
 ## Example 1
