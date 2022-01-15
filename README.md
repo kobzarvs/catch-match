@@ -2,6 +2,7 @@
 
 ## Motivation
 
+### java
 ```java
 try {
     ...
@@ -14,6 +15,27 @@ try {
 } finally {
   ....
 }
+```
+
+### javascript
+```javascript
+try {
+  error; // error intruction
+} catch (err) {
+  switch(err.constructor) {
+    case ReferenceError:
+    case SyntaxError:
+      console.error(`${err.constructor.name}: ${err.message}`);
+      break;
+    default:
+      console.error('other error:', err);
+  }
+} finally {
+  console.log('final')
+}
+
+//> ReferenceError: error is not defined
+//> final
 ```
 
 ## Getting started
