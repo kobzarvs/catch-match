@@ -1,13 +1,14 @@
 {
   "name": "catch-match",
-  "version": "0.1.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+  "version": "0.2.0",
+  "repository": {
+    "url": "https://github.com/kobzarvs/catch-match"
   },
-  "devDependencies": {
-    "typescript": "^4.4.4",
-    "vite": "^2.7.2"
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "typescript": "^4.5.4"
   }
 }
