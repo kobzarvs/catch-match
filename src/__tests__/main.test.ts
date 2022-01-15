@@ -211,16 +211,13 @@ test('should be return result without branches', () => {
   let matchOther = jest.fn();
   let matchFinally = jest.fn();
 
-  class CustomError extends Error {
-  }
-
   const result = $try(() => {
-    throw CustomError;
+    throw SyntaxError;
   });
 
   expect(matchCustomError).not.toBeCalled();
   expect(matchArrayOfErrors).not.toBeCalled();
   expect(matchOther).not.toBeCalled();
   expect(matchFinally).not.toBeCalled();
-  expect(result).toMatchObject({ error: CustomError, result: undefined });
+  expect(result).toMatchObject({ error: SyntaxError, result: undefined });
 });

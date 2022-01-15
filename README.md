@@ -94,31 +94,9 @@ console.log(result); // {error: undefined, result: [1, 2, 3]}
 ## Example 3
 
 ```javascript
-const result = $try(context => {
-  context.tmp = 'any context data';
-  console.log('start', context);
-  // ...
+const result = $try(() => {
   throw SyntaxError;
-}).catch([TypeError, ReferenceError], (context) => {
-  // noop
-}).other((error, context) => {
-  // error: SyntaxError
-  // context: {tmp: 'any context data'}
-  context.unexpectedError = true;
-}).finally(({value, context, error}) => {
-  // value: undefined 
-  // context: {tmp: 'any context data', unexpectedError: true}
-  // error: SyntaxError
-  if (!error) {
-    return value.reverse();
-  }
-});
+})
 
-console.log(result);
-// {
-//     value: undefined 
-//     context: {tmp: 'any context data', unexpectedError: true}
-//     error: SyntaxError
-// } 
-
+console.log(result); // { error: SyntaxError, result: undefined }
 ```
