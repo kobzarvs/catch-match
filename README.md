@@ -21,7 +21,7 @@ try {
 ### javascript
 ```javascript
 try {
-  error; // error intruction
+  error; // error instruction
 } catch (err) {
   switch(err.constructor) {
     case ReferenceError:
