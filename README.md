@@ -39,6 +39,10 @@ try {
 //> final
 ```
 
+## Features
+
+Supporting sync/async functions
+
 ## Getting started
 
 ```shell
@@ -99,4 +103,47 @@ const result = $try(() => {
 })
 
 console.log(result); // { error: SyntaxError, result: undefined }
+```
+
+## Promises example
+
+```typescript
+class AuthError extends Error {}
+
+function proc(event: string) {
+  return $try(() => new Promise((resolve, reject) => {
+    switch (event) {
+      case 'resolve':
+        resolve('resolved')
+        break;
+      case 'reject':
+        reject('rejected')
+        break;
+      case 'syntax':
+        throw SyntaxError
+      case 'auth':
+        throw AuthError
+      case 'error':
+        throw 'error'
+      default:
+        throw 'other errors'
+    }
+  }).catch('error', () => {
+    // console.log('error')
+  }).catch([SyntaxError, AuthError], (error) => {
+    // console.log(error)
+  }).other((error) => {
+    // console.log(error)
+  }).finally(({ value, error }) => {
+    // console.log({ value, error })
+  })
+}
+
+await proc('resolve') // { value: 'resolved' }}
+await proc('reject')  // { error: 'rejected' }
+
+await proc('syntax')  // { error: SyntaxError }
+await proc('auth')    // { error: AuthError }
+await proc('error')   // { error: 'error' }
+await proc('other')   // { error: 'other errors' }
 ```

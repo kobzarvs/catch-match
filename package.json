@@ -1,6 +1,6 @@
 {
   "name": "catch-match",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "repository": {
     "url": "https://github.com/kobzarvs/catch-match"
   },
@@ -12,7 +12,13 @@
     "errors",
     "exceptions",
     "throw",
-    "finally"
+    "finally",
+    "promises",
+    "resolve",
+    "reject",
+    "flow",
+    "control",
+    "process"
   ],
   "main": "dist/main.js",
   "scripts": {
