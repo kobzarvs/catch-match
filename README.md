@@ -66,7 +66,7 @@ const result = $try(() => {
   throw SyntaxError;
 }).catch(ReferenceError, () => {
   // noop
-}).catch([TypeError, SyntaxError], () => {
+}).catch([TypeError, SyntaxError], (error) => {
   // to be called
 }).other((error) => {
   // noop
@@ -84,7 +84,7 @@ const result = $try(() => {
   return [1, 2, 3];
 }).catch(ReferenceError, () => {
   // noop
-}).catch([TypeError, SyntaxError], () => {
+}).catch([TypeError, SyntaxError], (error) => {
   // to be called
 }).other((error) => {
   // noop
