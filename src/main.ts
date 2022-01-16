@@ -22,16 +22,13 @@ export type CatchReturn<Return, ErrorType = any> =
   FinallyReturn<Return, ErrorType> &
   OtherReturn<Return, ErrorType> &
   {
-    catch: (error: ErrorType | ErrorType[], handler: ErrrorHandler<ErrorType>) => TryReturn<Return, ErrorType>;
-    other: (handler: ErrrorHandler<ErrorType>) => Pick<TryReturn<Return, ErrorType>, 'finally' | 'value' | 'error'>,
+    catch: (error: ErrorType | ErrorType[], handler: ErrrorHandler<ErrorType>) => PromisedTryReturn<Return>;
+    other: (handler: ErrrorHandler<ErrorType>) => Pick<PromisedTryReturn<Return>, 'finally' | 'value' | 'error'>,
   }
 
-export type TryReturn<Return, ErrorType = any> =
-  CatchReturn<Return, ErrorType>
-
 export type PromisedTryReturn<Return> =
-  TryReturn<Return> |
-  (Promise<ResultType<Return>> & TryReturn<Return>)
+  CatchReturn<Return> |
+  (Promise<ResultType<Return>> & CatchReturn<Return>)
 
 export function $try<Return>(body: TryBody<Return>): PromisedTryReturn<Return> {
   let caught = false;
@@ -72,7 +69,7 @@ export function $try<Return>(body: TryBody<Return>): PromisedTryReturn<Return> {
     }
   }
 
-  const chain: TryReturn<Return, typeof error> = {
+  const chain: CatchReturn<Return, typeof error> = {
     catch: (err, handler) => {
       if (result instanceof Promise) {
         result.then((response) => {
