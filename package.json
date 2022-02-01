@@ -23,7 +23,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
-    "test": "CODECOV_TOKEN=22dc90dd-c97f-4c55-bb26-a0422ffff390 jest"
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
